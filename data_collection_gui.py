@@ -24,7 +24,7 @@ class DataCollection:
         self.frame_header = ttk.Frame(root)
         self.frame_header.pack()
         ttk.Label(self.frame_header, text='Rock Paper Scissors Data Collection',style='Header.TLabel').pack()
-        ttk.Label(self.frame_header, text='Set your meta data, record, play, save').pack()
+        ttk.Label(self.frame_header, text='Set your meta data, choose number of recordings, press record, play!').pack()
 
         # set up a frame for all meta data
         self.frame_meta = ttk.Frame(root)
