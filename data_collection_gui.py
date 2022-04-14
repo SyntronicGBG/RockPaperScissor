@@ -41,7 +41,7 @@ class DataCollection:
         ttk.Label(self.frame_meta,text='Counts:').grid(row=2,column=1,sticky='e',padx=5)
 
         # set the entry name
-        self.name = StringVar(None, 'NoName')
+        self.name = StringVar()
         self.entry_name = ttk.Entry(self.frame_meta, textvariable=self.name)
         self.entry_name.grid(row=0,column=2,sticky='w')
 
@@ -71,16 +71,19 @@ class DataCollection:
     def play(self):
         print(self.get_meta_data())
         #self.button_record['state'] = 'disabled'
-        try:
-            # record and save the video
-            data_collector.record_video(30, 2, 1, self.get_meta_data())
-            # let the user know it was successful
-            ttk.Label(self.frame_record,text='Recording successful!',style='Message.TLabel', foreground='green').grid(row=0,column=2,sticky='w')
-        except:
-            # let the user know something went wrong
-            ttk.Label(self.frame_record,text='Recording unsuccessful!',style='Message.TLabel', foreground='red').grid(row=0,column=2,sticky='w')
-        
-        #self.button_record['state'] = 'normal'
+        if not self.name.get():
+            ttk.Label(self.frame_record,text='Must enter a name of the player',
+                      style='Message.TLabel', foreground='red').grid(row=0,column=2,sticky='w')
+        else:
+            try:
+                # record and save the video
+                data_collector.record_video(30, 2, 1, self.get_meta_data())
+                # let the user know it was successful
+                ttk.Label(self.frame_record,text='Recording successful!',style='Message.TLabel', foreground='green').grid(row=0,column=2,sticky='w')
+            except:
+                # let the user know something went wrong
+                ttk.Label(self.frame_record,text='Recording unsuccessful!',style='Message.TLabel', foreground='red').grid(row=0,column=2,sticky='w')
+            #self.button_record['state'] = 'normal'
     
     def get_meta_data(self):
         meta_data = {'RPS': self.result.get(),
