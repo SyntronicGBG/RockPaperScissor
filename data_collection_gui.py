@@ -38,7 +38,7 @@ class DataCollection:
         # add labels for each meta data column
         ttk.Label(self.frame_meta,text='Name:').grid(row=0,column=1,sticky='e',padx=5)
         ttk.Label(self.frame_meta,text='Angle:').grid(row=1,column=1,sticky='e',padx=5)
-        ttk.Label(self.frame_meta,text='Counts:').grid(row=2,column=1,sticky='e',padx=5)
+        ttk.Label(self.frame_meta,text='Hand:').grid(row=2,column=1,sticky='e',padx=5)
 
         # set the entry name
         self.name = StringVar()
