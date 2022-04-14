@@ -37,7 +37,6 @@ def set_up_ssh_client():
     #Set up sshclient
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    #ssh.load_host_keys(os.path.expanduser(os.path.join("~", ".ssh", "known_hosts")))
 
     #Establish connection
     ssh.connect(server,port, username,password)
@@ -66,7 +65,7 @@ def connect_to_database():
     #Set 
     service = 'RockPaperSciccors'    
     server_name = '10.8.128.233'
-    database_name = 'RockPaperSciccors'
+    database_name = 'RockPaperScissors'
     username = 'SA'
     
     #Get credential
@@ -113,20 +112,6 @@ def add_new_movie(dataframe):
 conn, engine = connect_to_database()
 cursor = conn.cursor()
 
-### Example of a dataframe
-# data = {
-#     'hand_sign': 'Paper',
-#     'left_or_right_hand': 'left',
-#     'record_time': '2022-04-13 15:47:00',
-#     'movie_file_path':'/home/srd290_lab1/Documents/RockPaperScissors/Data/test.txt',
-#     'pixel_width':200,
-#     'pixel_height':200,
-#     'fps':30,
-#     'number_frames':200,
-#     'foto_model':'Agaton',
-#     'angle':'profile',
-#     'file_formate':'.mp4'
-# }
-# dataframe = pd.DataFrame(data,index=[0])
+
 
 

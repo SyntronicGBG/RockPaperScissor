@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-import DataCollector
+import data_collector
 
 class DataCollection:
     def __init__(self, root):
@@ -73,7 +73,7 @@ class DataCollection:
         #self.button_record['state'] = 'disabled'
         try:
             # record and save the video
-            DataCollector.record_video(30, 2, 1, self.get_meta_data())
+            data_collector.record_video(30, 2, 1, self.get_meta_data())
             # let the user know it was successful
             ttk.Label(self.frame_record,text='Recording successful!',style='Message.TLabel', foreground='green').grid(row=0,column=2,sticky='w')
         except:
