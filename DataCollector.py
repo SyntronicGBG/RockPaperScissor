@@ -14,15 +14,15 @@ def record_video(fps, seconds, scale_factor=1):
     cap = cv2.VideoCapture(0)
     
 
-    width= int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) # 640
-    height= int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) # 480
-    writer= cv2.VideoWriter('basicvideo.mp4', cv2.VideoWriter_fourcc(*'DIVX'), fps, (width, height))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) # 640
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) # 480
+    writer = cv2.VideoWriter('basicvideo.mp4', cv2.VideoWriter_fourcc(*'DIVX'), fps, (width, height))
     
     counter = 0
     while True:
         counter += 1
         
-        ret,frame = cap.read()
+        ret, frame = cap.read()
         frame = cv2.resize(frame, (0,0), fx=scale_factor, fy=scale_factor)
         writer.write(frame)
     
@@ -35,3 +35,4 @@ def record_video(fps, seconds, scale_factor=1):
     cap.release()
     writer.release()
     cv2.destroyAllWindows()
+    
