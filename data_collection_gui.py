@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-import DataCollector
+import data_collector
 
 class DataCollection:
     def __init__(self, root):
@@ -59,7 +59,7 @@ class DataCollection:
     
     def play(self):
         print(self.get_meta_data())
-        DataCollector.record_video(30, 2, 1, self.get_meta_data())
+        data_collector.record_video(30, 2, 1, self.get_meta_data())
     
     def get_meta_data(self):
         meta_data = {'RPS': self.result.get(),

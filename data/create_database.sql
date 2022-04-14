@@ -1,8 +1,8 @@
 
---CREATE DATABASE RockPaperSciccors
+--CREATE DATABASE RockPaperScissors
 
 
-USE RockPaperSciccors
+USE RockPaperScissors
 
 DROP TABLE movie_data
 CREATE TABLE movie_data(
@@ -21,4 +21,8 @@ CREATE TABLE movie_data(
     PRIMARY KEY(movie_id)
 )
 
+--SELECT * FROM movie_data
 
+-- USE RockPaperSciccors
+-- DROP TABLE movie_data
+-- DROP DATABASE RockPaperSciccors
