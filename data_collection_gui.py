@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import DataCollector
 
 class DataCollection:
     def __init__(self, root):
@@ -51,13 +52,14 @@ class DataCollection:
         self.frame_record = ttk.Frame(root)
         self.frame_record.pack()
 
-        self.logo = PhotoImage(file=r'C:\Users\emnixa\Documents\RockPaperScissors\Data Collection\peace.png')
-        self.video = ttk.Label(self.frame_record,image=self.logo).grid(row=0,column=0,sticky='w',padx=10)
+        #self.logo = PhotoImage(file=r'C:\Users\emnixa\Documents\RockPaperScissors\Data Collection\peace.png')
+        #self.video = ttk.Label(self.frame_record,image=self.logo).grid(row=0,column=0,sticky='w',padx=10)
 
         ttk.Button(self.frame_record,text='Play',command=self.play).grid(row=0,column=1,sticky='e',padx=10)
     
     def play(self):
         print(self.get_meta_data())
+        DataCollector.record_video(30, 2, 1, self.get_meta_data())
     
     def get_meta_data(self):
         meta_data = {'RPS': self.result.get(),

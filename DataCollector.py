@@ -7,16 +7,21 @@
 
 
 import cv2
-def record_video(fps, seconds, scale_factor=1):
+import srd290_lab1_connect as srd
+import pandas as pd
+from datetime import datetime
+import os
+
+def record_video(fps, seconds, scale_factor=1, meta_data={}):
     number_of_frames = int(fps * seconds)
     
     # write something that makes the video go to server
     cap = cv2.VideoCapture(0)
     
-
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) # 640
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) # 480
-    writer = cv2.VideoWriter('basicvideo.mp4', cv2.VideoWriter_fourcc(*'DIVX'), fps, (width, height))
+    local_name = 'basicvideo.mp4'
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)*scale_factor) # 640
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)*scale_factor) # 480
+    writer = cv2.VideoWriter(local_name, cv2.VideoWriter_fourcc(*'MP4V'), fps, (width, height))
     
     counter = 0
     while True:
@@ -35,4 +40,23 @@ def record_video(fps, seconds, scale_factor=1):
     cap.release()
     writer.release()
     cv2.destroyAllWindows()
-    
+    dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    remote_name = r'/home/srd290_lab1/Documents/RockPaperScissors/basic'+dt+'.mp4'
+    srd.transfer_local_file(local_name,remote_name)
+    data = {
+        'hand_sign': meta_data['RPS'],
+        'left_or_right_hand': meta_data['Hand'],
+        'record_time': dt,
+        'movie_file_path': remote_name,
+        'pixel_width': int(width),
+        'pixel_height': int(height),
+        'fps':fps,
+        'number_frames': number_of_frames,
+        'photo_model': meta_data['Name'],
+        'angle': meta_data['Angle'],
+        'file_format':'.mp4'
+    }
+    dataframe = pd.DataFrame(data,index=[0])
+    srd.add_new_movie(dataframe)
+
+    os.remove(local_name)

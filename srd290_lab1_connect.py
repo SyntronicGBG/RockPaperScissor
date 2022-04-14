@@ -37,7 +37,7 @@ def set_up_ssh_client():
     #Set up sshclient
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.load_host_keys(os.path.expanduser(os.path.join("~", ".ssh", "known_hosts")))
+    #ssh.load_host_keys(os.path.expanduser(os.path.join("~", ".ssh", "known_hosts")))
 
     #Establish connection
     ssh.connect(server,port, username,password)
@@ -66,7 +66,7 @@ def connect_to_database():
     #Set 
     service = 'RockPaperSciccors'    
     server_name = '10.8.128.233'
-    database_name = 'RockPaperSiccors'
+    database_name = 'RockPaperSciccors'
     username = 'SA'
     
     #Get credential
@@ -75,6 +75,12 @@ def connect_to_database():
         set_credentials(service,username)
         password = keyring.get_password(service,username)
 
+    print('Driver={ODBC Driver 17 for SQL Server};'
+                        f'Server={server_name};'
+                        f'Database={database_name};'
+                        f'UID={username};'
+                        f'PWD={password};'
+                        )
     #Set up pyodbc connection
     connection = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};'
                         f'Server={server_name};'
@@ -112,7 +118,7 @@ cursor = conn.cursor()
 #     'hand_sign': 'Paper',
 #     'left_or_right_hand': 'left',
 #     'record_time': '2022-04-13 15:47:00',
-#     'movie_file_path':'srd290_lab1/Documents/RockPaperSciccors/Data/test.txt',
+#     'movie_file_path':'/home/srd290_lab1/Documents/RockPaperScissors/Data/test.txt',
 #     'pixel_width':200,
 #     'pixel_height':200,
 #     'fps':30,
