@@ -80,6 +80,8 @@ class DataCollection:
 
     
     def record(self):
+        """Record a game
+        """
         self.button_record.state(['disabled'])
         if not self.name.get():
             self.status.set('Must enter a name of the player')
@@ -104,6 +106,11 @@ class DataCollection:
         self.button_record.state(['!disabled'])
     
     def get_meta_data(self):
+        """Get current meta data settings
+
+        Returns:
+            dictionary: meta data
+        """
         meta_data = {'RPS': self.result.get(),
                      'Angle': self.angle.get(),
                      'Name': self.entry_name.get(),
@@ -111,6 +118,8 @@ class DataCollection:
         return meta_data
 
 def main():
+    """Run GUI
+    """
     root = Tk()
     DataCollection(root)
     root.mainloop()
