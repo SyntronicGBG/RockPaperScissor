@@ -67,23 +67,29 @@ class DataCollection:
         # set up the button for recording
         self.button_record = ttk.Button(self.frame_record,text='Record',command=self.record)
         self.button_record.grid(row=0,column=1,sticky='e',padx=10)
+
+        # set up message of recording status
+        self.status = StringVar()
+        self.label_record = ttk.Label(self.frame_record,style='Message.TLabel', textvariable=self.status)
+        self.label_record.grid(row=0,column=2,sticky='w')
+
     
     def record(self):
-        print(self.get_meta_data())
-        #self.button_record['state'] = 'disabled'
         if not self.name.get():
-            ttk.Label(self.frame_record,text='Must enter a name of the player',
-                      style='Message.TLabel', foreground='red').grid(row=0,column=2,sticky='w')
+            self.status.set('Must enter a name of the player')
+            self.label_record.configure(foreground='red')
         else:
+            print(self.get_meta_data())
             try:
                 # record and save the video
                 data_collector.record_video(30, 2, 1, self.get_meta_data())
                 # let the user know it was successful
-                ttk.Label(self.frame_record,text='Recording successful!',style='Message.TLabel', foreground='green').grid(row=0,column=2,sticky='w')
+                self.status.set('Recording successful!')
+                self.label_record.configure(foreground='green')
             except:
                 # let the user know something went wrong
-                ttk.Label(self.frame_record,text='Recording unsuccessful!',style='Message.TLabel', foreground='red').grid(row=0,column=2,sticky='w')
-            #self.button_record['state'] = 'normal'
+                self.status.set('Recording unsuccessful!')
+                self.label_record.configure(foreground='red')
     
     def get_meta_data(self):
         meta_data = {'RPS': self.result.get(),
