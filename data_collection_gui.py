@@ -65,10 +65,10 @@ class DataCollection:
         #self.video = ttk.Label(self.frame_record,image=self.logo).grid(row=0,column=0,sticky='w',padx=10)
 
         # set up the button for recording
-        self.button_record = ttk.Button(self.frame_record,text='Record',command=self.play)
+        self.button_record = ttk.Button(self.frame_record,text='Record',command=self.record)
         self.button_record.grid(row=0,column=1,sticky='e',padx=10)
     
-    def play(self):
+    def record(self):
         print(self.get_meta_data())
         #self.button_record['state'] = 'disabled'
         if not self.name.get():
