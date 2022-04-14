@@ -16,6 +16,7 @@ class DataCollection:
         style.configure('TButton', background='#e1d8b9', font=('Arial',11))
         style.configure('TCombobox', background='#e1d8b9', font=('Arial',11))
         style.configure('TRadiobutton', background='#e1d8b9', font=('Arial',11))
+        style.configure('Message.TLabel', background='#e1d8b9', font=('Arial',10))
 
         self.frame_header = ttk.Frame(root)
         self.frame_header.pack()
@@ -55,11 +56,19 @@ class DataCollection:
         #self.logo = PhotoImage(file=r'C:\Users\emnixa\Documents\RockPaperScissors\Data Collection\peace.png')
         #self.video = ttk.Label(self.frame_record,image=self.logo).grid(row=0,column=0,sticky='w',padx=10)
 
-        ttk.Button(self.frame_record,text='Play',command=self.play).grid(row=0,column=1,sticky='e',padx=10)
+        self.button_record = ttk.Button(self.frame_record,text='Record',command=self.play)
+        self.button_record.grid(row=0,column=1,sticky='e',padx=10)
     
     def play(self):
         print(self.get_meta_data())
-        DataCollector.record_video(30, 2, 1, self.get_meta_data())
+        #self.button_record['state'] = 'disabled'
+        try:
+            DataCollector.record_video(30, 2, 1, self.get_meta_data())
+            ttk.Label(self.frame_record,text='Recording successful!',style='Message.TLabel', foreground='green').grid(row=0,column=2,sticky='w')
+        except:
+            ttk.Label(self.frame_record,text='Recording unsuccessful!',style='Message.TLabel', foreground='red').grid(row=0,column=2,sticky='w')
+        
+        #self.button_record['state'] = 'normal'
     
     def get_meta_data(self):
         meta_data = {'RPS': self.result.get(),
