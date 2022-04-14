@@ -46,13 +46,13 @@ class DataCollection:
         self.entry_name.grid(row=0,column=2,sticky='w')
 
         # set the combobox for the angle of the hand toward the camera
-        self.angle_of_hand = StringVar(None,'inside')
+        self.angle_of_hand = StringVar(None,'Outside')
         self.angle = ttk.Combobox(self.frame_meta, textvariable=self.angle_of_hand,
-                                  values=('inside','in front','outside'))
+                                  values=('Inside','Frontal','Outside'))
         self.angle.grid(row=1,column=2,sticky='w')
 
         # set the combobox for which hand is used
-        self.l_r_hand = StringVar(None,'Left')
+        self.l_r_hand = StringVar(None,'Right')
         self.hand = ttk.Combobox(self.frame_meta, textvariable=self.l_r_hand,
                                  values=('Left','Right'))
         self.hand.grid(row=2, column=2,sticky='w')
