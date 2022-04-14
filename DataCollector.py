@@ -1,3 +1,11 @@
+# Script containing a function that starts a recording using the webcam of the 
+# laptop. The function takes "fps", "seconds" and "scale_factor" as arguments
+# where fps determines the number of frames saved per second, seconds
+# determines the length of the video (implemented through saving a set 
+# number of frames at a specified frame rate) and a scale_factor of 
+# eg. 0.5 halves the width and height of the video.
+
+
 import cv2
 def record_video(fps, seconds, scale_factor=1):
     number_of_frames = int(fps * seconds)
