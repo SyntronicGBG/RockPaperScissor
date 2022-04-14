@@ -41,7 +41,9 @@ def record_video(fps, seconds, scale_factor=1, meta_data={}):
     writer.release()
     cv2.destroyAllWindows()
     dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    remote_name = r'/home/srd290_lab1/Documents/RockPaperScissors/basic'+dt+'.mp4'
+    
+    
+    remote_name = f'/home/srd290_lab1/Documents/RockPaperScissors/data/'+meta_data['Hand']+'_'+meta_data['Name']+'_'+dt+'.mp4'
     srd.transfer_local_file(local_name,remote_name)
     data = {
         'hand_sign': meta_data['RPS'],
