@@ -6,6 +6,7 @@ class DataCollection:
     def __init__(self, root):
         # configure the root Tk window
         root.title('Data Collection')
+        root.minsize(640,150)
         root.resizeable=(False,False)
         root.configure(background='#e1d8b9')
 
@@ -64,32 +65,43 @@ class DataCollection:
         #self.logo = PhotoImage(file=r'C:\Users\emnixa\Documents\RockPaperScissors\Data Collection\peace.png')
         #self.video = ttk.Label(self.frame_record,image=self.logo).grid(row=0,column=0,sticky='w',padx=10)
 
+        ttk.Label(self.frame_record,text='Number of recordings:').grid(row=0,column=0,sticky='e',padx=5)
+        self.n_recordings = IntVar(None, 1)
+        self.spinbox_recordings = ttk.Spinbox(self.frame_record, textvariable=self.n_recordings,
+                                              from_=0, to=50).grid(row=0,column=1,sticky='w',padx=10)
         # set up the button for recording
         self.button_record = ttk.Button(self.frame_record,text='Record',command=self.record)
-        self.button_record.grid(row=0,column=1,sticky='e',padx=10)
+        self.button_record.grid(row=0,column=2,sticky='e',padx=10)
 
         # set up message of recording status
         self.status = StringVar()
         self.label_record = ttk.Label(self.frame_record,style='Message.TLabel', textvariable=self.status)
-        self.label_record.grid(row=0,column=2,sticky='w')
+        self.label_record.grid(row=0,column=3,sticky='w')
 
     
     def record(self):
+        self.button_record.state(['disabled'])
         if not self.name.get():
             self.status.set('Must enter a name of the player')
+            self.label_record.configure(foreground='red')
+        elif not self.n_recordings.get():
+            self.status.set('Must enter number of recordings')
             self.label_record.configure(foreground='red')
         else:
             print(self.get_meta_data())
             try:
-                # record and save the video
-                data_collector.record_video(30, 2, 1, self.get_meta_data())
-                # let the user know it was successful
-                self.status.set('Recording successful!')
-                self.label_record.configure(foreground='green')
+                n_recs = self.n_recordings.get()
+                for i in range(n_recs):
+                    # record and save the video
+                    data_collector.record_video(30, 2, 1, self.get_meta_data())
+                    # let the user know it was successful
+                    self.status.set('Recording ' + str(i+1) + '/' + str(n_recs) + ' successful!')
+                    self.label_record.configure(foreground='green')
             except:
                 # let the user know something went wrong
                 self.status.set('Recording unsuccessful!')
                 self.label_record.configure(foreground='red')
+        self.button_record.state(['!disabled'])
     
     def get_meta_data(self):
         meta_data = {'RPS': self.result.get(),
