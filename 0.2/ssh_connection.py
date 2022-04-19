@@ -1,5 +1,5 @@
 import paramiko
-from Credentials import Credentials
+from credentials import Credentials
 
 
 class SSHConnection:

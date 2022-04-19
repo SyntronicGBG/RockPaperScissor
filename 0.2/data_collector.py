@@ -10,8 +10,8 @@ import cv2
 import pandas as pd
 from datetime import datetime
 import os
-from SSHConnection import SSHConnection
-from SQLConnection import SQLConnection
+from ssh_connection import SSHConnection
+from sql_connection import SQLConnection
 
 class DataCollector:
     def __init__(self):

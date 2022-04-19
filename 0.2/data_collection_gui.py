@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import Tk
 from tkinter import StringVar
 # import data_collector
-from DataCollector import DataCollector
+from data_collector import DataCollector
 
 
 class DataCollectionGUI:

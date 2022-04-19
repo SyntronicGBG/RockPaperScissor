@@ -1,7 +1,7 @@
 import pyodbc
 import urllib
 from sqlalchemy import create_engine
-from Credentials import Credentials
+from credentials import Credentials
 
 
 class SQLConnection:
