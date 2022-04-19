@@ -15,12 +15,8 @@ class SSHConnection:
         self.sftp.close()
         self.ssh.close()
 
-
     def set_up_ssh_client(self):
-        """Sett up ssh connection to srd290_lab1.
-
-        Returns:
-            paramiko.SSHClient, paramiko.SSHClient.SFTP. : Connections to remote computer
+        """Set up ssh connection to srd290_lab1.
         """
         #Get credentials
         password = self.cred.get_credentials(self.service, self.username)
@@ -32,7 +28,6 @@ class SSHConnection:
         #Establish connection
         self.ssh.connect(self.server, self.port, self.username, password)
         self.sftp = self.ssh.open_sftp()
-
 
     def transfer_local_file(self, local_file, remote_file):
         """Transfer a local file e.g. a movie to srd290_lab1.

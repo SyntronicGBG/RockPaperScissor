@@ -75,12 +75,9 @@ class DataCollectionGUI:
                 'fps': 30,
                 'number_frames': 30*2,
                 }
-        print(meta_data)
-        self.dc.record_video(meta_data)
-        print(meta_data)
-        self.dc.transfer_video(meta_data)
-        print(meta_data)
 
+        self.dc.record_video(meta_data)
+        self.dc.transfer_video(meta_data)
 
 def main():
     root = Tk()

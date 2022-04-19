@@ -17,12 +17,8 @@ class SQLConnection:
         self.sqlalchemy_engine.dispose()
         self.connection.close()
 
-
     def connect_to_database(self):
         """Establish connections with the SQL server on srd290_lab1.
-
-        Returns:
-            pyodbc.connect, sqlalchemy.create_engin: Two connections to the SQL database
         """
         #Get credentials
         password = self.cred.get_credentials(self.service, self.username)
@@ -33,7 +29,6 @@ class SQLConnection:
                             f'UID={self.username};'
                             f'PWD={password};'
                             )
-        print(connection_string)
 
         #Set up pyodbc connection
         self.connection = pyodbc.connect(connection_string)
@@ -45,10 +40,11 @@ class SQLConnection:
         self.sqlalchemy_engine = create_engine(sqlalchemy_database_url)
 
     def add_new_dataframe(self, table, dataframe):
-        """Add matedata of a movie to the database. For example dataframe see source code.
+        """Add meta data to a table in the database.
 
         Args:
-            dataframe (pandas.DataFrame): Containing matadat for movie.
+            table: Table for storing data
+            dataframe (pandas.DataFrame): Containing meta data for storage.
         """
         dataframe.to_sql(table, self.sqlalchemy_engine, if_exists='append', index=False)
 

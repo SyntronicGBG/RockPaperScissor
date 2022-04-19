@@ -32,6 +32,14 @@ class DataCollector:
         cv2.destroyAllWindows()
 
     def record_video(self, meta_data, scale_factor=1):
+        """Records a video, length specified in meta_data.
+
+        Args:
+            meta_data (dictionary): Contains all meta data associated with the video
+            scale_factor (number > 0): Width and height of video is multiplied
+            by this value
+        """
+
         local_name = meta_data['movie_file_path']
         fps = meta_data['fps']
 
@@ -60,8 +68,13 @@ class DataCollector:
                 break
         writer.release()
 
-
     def transfer_video(self, meta_data):
+        """Transfers the video to the sql-database.
+
+        Args:
+            meta_data (dictionary): Contains all meta data associated with the video
+
+        """
         local_name = meta_data['movie_file_path']
         hand = meta_data['left_or_right_hand']
         name = meta_data['photo_model']
