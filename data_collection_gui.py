@@ -73,10 +73,14 @@ class DataCollection:
         self.button_record = ttk.Button(self.frame_record,text='Record',command=self.record)
         self.button_record.grid(row=0,column=2,sticky='e',padx=10)
 
+        # set up the button for saving recording
+        self.button_save = ttk.Button(self.frame_record,text='Save',command=self.save)
+        self.button_save.grid(row=0,column=3,sticky='e',padx=10)
+
         # set up message of recording status
         self.status = StringVar()
         self.label_record = ttk.Label(self.frame_record,style='Message.TLabel', textvariable=self.status)
-        self.label_record.grid(row=0,column=3,sticky='w')
+        self.label_record.grid(row=0,column=4,sticky='w')
 
     
     def record(self):
@@ -104,6 +108,25 @@ class DataCollection:
                 self.status.set('Recording unsuccessful!')
                 self.label_record.configure(foreground='red')
         self.button_record.state(['!disabled'])
+    
+    def save(self):
+        """Save a recording
+        """
+        self.button_save.state(['disabled'])
+        print('Save video')
+        #try:
+        #    n_recs = self.n_recordings.get()
+        #    for i in range(n_recs):
+        #        # record and save the video
+        #        data_collector.save_video(30, 2, 1, self.get_meta_data())
+        #        # let the user know it was successful
+        #        self.status.set('Recording ' + str(i+1) + '/' + str(n_recs) + ' successful!')
+        #        self.label_record.configure(foreground='green')
+        #except:
+        #    # let the user know something went wrong
+        #    self.status.set('Recording unsuccessful!')
+        #    self.label_record.configure(foreground='red')
+        self.button_save.state(['!disabled'])
     
     def get_meta_data(self):
         """Get current meta data settings
