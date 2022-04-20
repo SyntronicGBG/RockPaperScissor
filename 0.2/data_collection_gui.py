@@ -69,10 +69,13 @@ class DataCollectionGUI:
         self.button_record_save = ttk.Button(self.frame_record,text='Record',command=self.record)
         self.button_record_save.grid(row=0,column=2,sticky='e',padx=10)
 
+        # clear button
+        self.button_clear = ttk.Button(self.frame_record,text='Clear',command=self.clear)
+
         # set up message of recording status
         self.status = StringVar()
         self.label_record = ttk.Label(self.frame_record,style='Message.TLabel', textvariable=self.status)
-        self.label_record.grid(row=0,column=4,sticky='w')
+        self.label_record.grid(row=0,column=3,sticky='w')
 
         # init meta_data
         self.meta_data = {}
@@ -96,6 +99,7 @@ class DataCollectionGUI:
                 self.dc.record_video(self.meta_data)
                 # change button to save
                 self.button_record_save.configure(text='Save', command=self.save)
+                self.button_clear.grid(row=0,column=4,sticky='e',padx=10)
                 # let the user know recording was successful
                 self.status.set('Recording successful!')
                 self.label_record.configure(foreground='green')
@@ -114,6 +118,7 @@ class DataCollectionGUI:
             self.dc.transfer_video(self.meta_data)
             # change button to save
             self.button_record_save.configure(text='Record', command=self.record)
+            self.button_clear.grid_forget()
             # let the user know it was successful
             self.status.set('Saving successful!')
             self.label_record.configure(foreground='green')
@@ -123,6 +128,14 @@ class DataCollectionGUI:
             self.label_record.configure(foreground='red')
         self.button_record_save.state(['!disabled'])
     
+    def clear(self):
+        """Clear recording
+        """
+        self.reset_meta_data()
+        self.button_record_save.configure(text='Record', command=self.record)
+        self.button_clear.grid_forget()
+
+
     def reset_meta_data(self):
         """Reset meta data settings
         """
