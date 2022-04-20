@@ -30,10 +30,20 @@ class SSHConnection:
         self.sftp = self.ssh.open_sftp()
 
     def transfer_local_file(self, local_file, remote_file):
-        """Transfer a local file e.g. a movie to srd290_lab1.
+        """Transfer a local file e.g. a movie to remote desktop.
 
         Args:
             local_file (string): file path to local file
             remote_file (string): file path to remote file on srd290_lab1
         """
         self.sftp.put(local_file, remote_file)
+
+    def delete_remote_file(self,remote_files):
+        """Delete file e.g. a movie on the remote desktop.
+
+        Args:
+            remote_files (list): A list of file paths to be removed.
+        """
+        for remote_file in remote_files:
+            print(remote_file)
+            self.sftp.remove(remote_file)
