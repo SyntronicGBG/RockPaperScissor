@@ -86,7 +86,11 @@ class DataCollector:
                                     'data',
                                     f'{hand}_{name}_{dt}.mp4'])
         self.ssh_connection.transfer_local_file(local_name, remote_name)
-        os.remove(local_name)
+        self.remove_video(meta_data)
         meta_data['movie_file_path'] = remote_name
         dataframe = pd.DataFrame(meta_data, index=[0])
         self.sql_connection.add_new_dataframe('movie_data', dataframe)
+
+    def remove_video(self, meta_data):
+        local_name = meta_data['movie_file_path']
+        os.remove(local_name)
