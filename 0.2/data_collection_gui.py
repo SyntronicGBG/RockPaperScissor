@@ -131,6 +131,7 @@ class DataCollectionGUI:
     def clear(self):
         """Clear recording
         """
+        self.dc.remove_video(self.meta_data)
         self.reset_meta_data()
         self.button_record_save.configure(text='Record', command=self.record)
         self.button_clear.grid_forget()
