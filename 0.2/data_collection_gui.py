@@ -1,5 +1,4 @@
-from tkinter import *
-from tkinter import ttk
+from tkinter import Tk, ttk, StringVar
 from data_collector import DataCollector
 
 
@@ -27,7 +26,7 @@ class DataCollectionGUI:
         self.frame_header = ttk.Frame(root)
         self.frame_header.pack()
         ttk.Label(self.frame_header, text='Rock Paper Scissors Data Collection',style='Header.TLabel').pack()
-        ttk.Label(self.frame_header, text='Set your meta data, choose number of recordings, press record, play!').pack()
+        ttk.Label(self.frame_header, text='Set your meta data, press record, play and then either save or clear').pack()
 
         # set up a frame for all meta data
         self.frame_meta = ttk.Frame(root)
@@ -135,7 +134,8 @@ class DataCollectionGUI:
         self.reset_meta_data()
         self.button_record_save.configure(text='Record', command=self.record)
         self.button_clear.grid_forget()
-
+        self.status.set('Removed recording')
+        self.label_record.configure(foreground='green')
 
     def reset_meta_data(self):
         """Reset meta data settings
