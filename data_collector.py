@@ -79,12 +79,12 @@ class DataCollector:
         hand = meta_data['left_or_right_hand']
         name = meta_data['photo_model']
         dt = meta_data['record_time']
-        remote_name = os.sep.join(['home',
-                                    'srd290_lab1',
-                                    'Documents',
-                                    'RockPaperScissors',
-                                    'data',
-                                    f'{hand}_{name}_{dt}.mp4'])
+        remote_name = ''.join(['/home',
+                                '/srd290_lab1',
+                                '/Documents',
+                                '/RockPaperScissors',
+                                '/data',
+                                f'/{hand}_{name}_{dt}.mp4'])
         self.ssh_connection.transfer_local_file(local_name, remote_name)
         self.remove_video(meta_data)
         meta_data['movie_file_path'] = remote_name
