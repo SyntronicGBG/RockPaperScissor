@@ -65,19 +65,9 @@ class DataCollectionGUI:
         self.frame_record = ttk.Frame(root)
         self.frame_record.pack()
 
-        # set number of recordings
-        #ttk.Label(self.frame_record,text='Number of recordings:').grid(row=0,column=0,sticky='e',padx=5)
-        #self.n_recordings = IntVar(None, 1)
-        #self.spinbox_recordings = ttk.Spinbox(self.frame_record, textvariable=self.n_recordings,
-        #                                      from_=0, to=50).grid(row=0,column=1,sticky='w',padx=10)
-
-        # set up the button for recording
-        self.button_record = ttk.Button(self.frame_record,text='Record',command=self.record)
-        self.button_record.grid(row=0,column=2,sticky='e',padx=10)
-
-        # set up the button for saving recording
-        self.button_save = ttk.Button(self.frame_record,text='Save',command=self.save)
-        self.button_save.grid(row=0,column=3,sticky='e',padx=10)
+        # set up the button for recording and saving
+        self.button_record_save = ttk.Button(self.frame_record,text='Record',command=self.record)
+        self.button_record_save.grid(row=0,column=2,sticky='e',padx=10)
 
         # set up message of recording status
         self.status = StringVar()
@@ -95,7 +85,7 @@ class DataCollectionGUI:
     def record(self):
         """Record a video
         """
-        self.button_record.state(['disabled'])
+        self.button_record_save.state(['disabled'])
         if not self.name.get():
             self.status.set('Must enter a name of the player')
             self.label_record.configure(foreground='red')
@@ -104,6 +94,8 @@ class DataCollectionGUI:
             try:
                 # record the video
                 self.dc.record_video(self.meta_data)
+                # change button to save
+                self.button_record_save.configure(text='Save', command=self.save)
                 # let the user know recording was successful
                 self.status.set('Recording successful!')
                 self.label_record.configure(foreground='green')
@@ -111,15 +103,17 @@ class DataCollectionGUI:
                 # let the user know something went wrong
                 self.status.set('Recording unsuccessful!')
                 self.label_record.configure(foreground='red')
-        self.button_record.state(['!disabled'])
+        self.button_record_save.state(['!disabled'])
     
     def save(self):
         """Save recorded video
         """
-        self.button_record.state(['disabled'])
+        self.button_record_save.state(['disabled'])
         try:
             # save the video
             self.dc.transfer_video(self.meta_data)
+            # change button to save
+            self.button_record_save.configure(text='Record', command=self.record)
             # let the user know it was successful
             self.status.set('Saving successful!')
             self.label_record.configure(foreground='green')
@@ -127,7 +121,7 @@ class DataCollectionGUI:
             # let the user know something went wrong
             self.status.set('Saving unsuccessful!')
             self.label_record.configure(foreground='red')
-        self.button_record.state(['!disabled'])
+        self.button_record_save.state(['!disabled'])
     
     def reset_meta_data(self):
         """Reset meta data settings
