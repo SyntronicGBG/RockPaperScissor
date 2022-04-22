@@ -1,9 +1,11 @@
-from tkinter import *
-from tkinter import ttk
-import data_collector
+from tkinter import Tk, ttk, StringVar
+from data_collector import DataCollector
 
-class DataCollection:
+
+class DataCollectionGUI:
     def __init__(self, root):
+        self.dc = DataCollector()
+
         # configure the root Tk window
         root.title('Data Collection')
         root.minsize(640,150)
@@ -24,7 +26,7 @@ class DataCollection:
         self.frame_header = ttk.Frame(root)
         self.frame_header.pack()
         ttk.Label(self.frame_header, text='Rock Paper Scissors Data Collection',style='Header.TLabel').pack()
-        ttk.Label(self.frame_header, text='Set your meta data, choose number of recordings, press record, play!').pack()
+        ttk.Label(self.frame_header, text='Set your meta data, press record, play and then either save or clear').pack()
 
         # set up a frame for all meta data
         self.frame_meta = ttk.Frame(root)
@@ -62,90 +64,97 @@ class DataCollection:
         self.frame_record = ttk.Frame(root)
         self.frame_record.pack()
 
-        #self.logo = PhotoImage(file=r'C:\Users\emnixa\Documents\RockPaperScissors\Data Collection\peace.png')
-        #self.video = ttk.Label(self.frame_record,image=self.logo).grid(row=0,column=0,sticky='w',padx=10)
+        # set up the button for recording and saving
+        self.button_record_save = ttk.Button(self.frame_record,text='Record',command=self.record)
+        self.button_record_save.grid(row=0,column=2,sticky='e',padx=10)
 
-        ttk.Label(self.frame_record,text='Number of recordings:').grid(row=0,column=0,sticky='e',padx=5)
-        self.n_recordings = IntVar(None, 1)
-        self.spinbox_recordings = ttk.Spinbox(self.frame_record, textvariable=self.n_recordings,
-                                              from_=0, to=50).grid(row=0,column=1,sticky='w',padx=10)
-        # set up the button for recording
-        self.button_record = ttk.Button(self.frame_record,text='Record',command=self.record)
-        self.button_record.grid(row=0,column=2,sticky='e',padx=10)
-
-        # set up the button for saving recording
-        self.button_save = ttk.Button(self.frame_record,text='Save',command=self.save)
-        self.button_save.grid(row=0,column=3,sticky='e',padx=10)
+        # clear button
+        self.button_clear = ttk.Button(self.frame_record,text='Clear',command=self.clear)
 
         # set up message of recording status
         self.status = StringVar()
         self.label_record = ttk.Label(self.frame_record,style='Message.TLabel', textvariable=self.status)
-        self.label_record.grid(row=0,column=4,sticky='w')
+        self.label_record.grid(row=0,column=3,sticky='w')
 
-    
-    def record(self):
-        """Record a game
+        # init meta_data
+        self.meta_data = {}
+
+    def close(self):
+        """Stop all background processes
         """
-        self.button_record.state(['disabled'])
+        self.dc.close()
+
+    def record(self):
+        """Record a video
+        """
+        self.button_record_save.state(['disabled'])
         if not self.name.get():
             self.status.set('Must enter a name of the player')
             self.label_record.configure(foreground='red')
-        elif not self.n_recordings.get():
-            self.status.set('Must enter number of recordings')
-            self.label_record.configure(foreground='red')
         else:
-            print(self.get_meta_data())
+            self.reset_meta_data()
             try:
-                n_recs = self.n_recordings.get()
-                for i in range(n_recs):
-                    # record and save the video
-                    data_collector.record_video(30, 2, 1, self.get_meta_data())
-                    # let the user know it was successful
-                    self.status.set('Recording ' + str(i+1) + '/' + str(n_recs) + ' successful!')
-                    self.label_record.configure(foreground='green')
+                # record the video
+                self.dc.record_video(self.meta_data)
+                # change button to save
+                self.button_record_save.configure(text='Save', command=self.save)
+                self.button_clear.grid(row=0,column=4,sticky='e',padx=10)
+                # let the user know recording was successful
+                self.status.set('Recording successful!')
+                self.label_record.configure(foreground='green')
             except:
                 # let the user know something went wrong
                 self.status.set('Recording unsuccessful!')
                 self.label_record.configure(foreground='red')
-        self.button_record.state(['!disabled'])
+        self.button_record_save.state(['!disabled'])
     
     def save(self):
-        """Save a recording
+        """Save recorded video
         """
-        self.button_save.state(['disabled'])
-        print('Save video')
-        #try:
-        #    n_recs = self.n_recordings.get()
-        #    for i in range(n_recs):
-        #        # record and save the video
-        #        data_collector.save_video(30, 2, 1, self.get_meta_data())
-        #        # let the user know it was successful
-        #        self.status.set('Recording ' + str(i+1) + '/' + str(n_recs) + ' successful!')
-        #        self.label_record.configure(foreground='green')
-        #except:
-        #    # let the user know something went wrong
-        #    self.status.set('Recording unsuccessful!')
-        #    self.label_record.configure(foreground='red')
-        self.button_save.state(['!disabled'])
+        self.button_record_save.state(['disabled'])
+        try:
+            # save the video
+            self.dc.transfer_video(self.meta_data)
+            # change button to save
+            self.button_record_save.configure(text='Record', command=self.record)
+            self.button_clear.grid_forget()
+            # let the user know it was successful
+            self.status.set('Saving successful!')
+            self.label_record.configure(foreground='green')
+        except:
+            # let the user know something went wrong
+            self.status.set('Saving unsuccessful!')
+            self.label_record.configure(foreground='red')
+        self.button_record_save.state(['!disabled'])
     
-    def get_meta_data(self):
-        """Get current meta data settings
-
-        Returns:
-            dictionary: meta data
+    def clear(self):
+        """Clear recording
         """
-        meta_data = {'RPS': self.result.get(),
-                     'Angle': self.angle.get(),
-                     'Name': self.entry_name.get(),
-                     'Hand': self.hand.get()}
-        return meta_data
+        self.dc.remove_video(self.meta_data)
+        self.reset_meta_data()
+        self.button_record_save.configure(text='Record', command=self.record)
+        self.button_clear.grid_forget()
+        self.status.set('Removed recording')
+        self.label_record.configure(foreground='green')
+
+    def reset_meta_data(self):
+        """Reset meta data settings
+        """
+        self.meta_data = {
+                'hand_sign': self.result.get(),
+                'left_or_right_hand': self.hand.get(),
+                'photo_model': self.entry_name.get(),
+                'angle': self.angle.get(),
+                'movie_file_path': 'basicvideo.mp4',
+                'fps': 30,
+                'number_frames': 30*2,
+                }
 
 def main():
-    """Run GUI
-    """
     root = Tk()
-    DataCollection(root)
+    dcg = DataCollectionGUI(root)
     root.mainloop()
+    dcg.close()
 
 if __name__ == '__main__':
     main()
