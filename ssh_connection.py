@@ -1,3 +1,5 @@
+import os
+import cv2
 import paramiko
 from credentials import Credentials
 
@@ -47,3 +49,32 @@ class SSHConnection:
         for remote_file in remote_files:
             print(remote_file)
             self.sftp.remove(remote_file)
+    
+    def watch_remote_movie(self,remote_file):
+        """Watch a recorded video located on the remote desktop.
+
+        Args:
+            remote_file (string): File path to the video on the remote desktop.
+        """
+        
+        #Transfer remote file to local file
+        temporary_local_file = 'temp_file.mp4'
+        self.sftp.get(remotepath=remote_file, localpath=temporary_local_file)
+        
+        #Play movie
+        cap = cv2.VideoCapture(temporary_local_file)
+        if cap.isOpened()==False:
+            print("Error opening video file")
+        while cap.isOpened():
+            ret,frame=cap.read()
+            if ret==True:
+                cv2.imshow('Frame',frame)
+                if cv2.waitKey(25)==ord('q'):
+                    break
+            else:
+                break
+        cap.release()
+        cv2.destroyAllWindows()
+        
+        #Delete local file
+        os.remove(temporary_local_file)
