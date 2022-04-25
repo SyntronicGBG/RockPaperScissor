@@ -106,7 +106,8 @@ class DataCollectionGUI:
                 # let the user know recording was successful
                 self.status.set('Recording successful!')
                 self.label_record.configure(foreground='green')
-            except:
+            except Exception as e:
+                print(e)
                 # let the user know something went wrong
                 self.status.set('Recording unsuccessful!')
                 self.label_record.configure(foreground='red')
@@ -126,7 +127,8 @@ class DataCollectionGUI:
             # let the user know it was successful
             self.status.set('Saving successful!')
             self.label_record.configure(foreground='green')
-        except:
+        except Exception as e:
+            print(e)
             # let the user know something went wrong
             self.status.set('Saving unsuccessful!')
             self.label_record.configure(foreground='red')
