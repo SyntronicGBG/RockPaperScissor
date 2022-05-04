@@ -1,6 +1,6 @@
 from tkinter import Tk, ttk, StringVar
 from data_collector import DataCollector
-
+from os import startfile
 
 class DataCollectionGUI:
     def __init__(self, root):
@@ -68,6 +68,9 @@ class DataCollectionGUI:
         self.button_record_save = ttk.Button(self.frame_record,text='Record',command=self.record)
         self.button_record_save.grid(row=0,column=2,sticky='e',padx=10)
 
+        # show video button
+        self.button_show = ttk.Button(self.frame_record,text='Show',command=self.show)
+        
         # clear button
         self.button_clear = ttk.Button(self.frame_record,text='Clear',command=self.clear)
 
@@ -98,11 +101,13 @@ class DataCollectionGUI:
                 self.dc.record_video(self.meta_data)
                 # change button to save
                 self.button_record_save.configure(text='Save', command=self.save)
-                self.button_clear.grid(row=0,column=4,sticky='e',padx=10)
+                self.button_show.grid(row=0,column=4,sticky='e',padx=10)
+                self.button_clear.grid(row=0,column=5,sticky='e',padx=10)
                 # let the user know recording was successful
                 self.status.set('Recording successful!')
                 self.label_record.configure(foreground='green')
-            except:
+            except Exception as e:
+                print(e)
                 # let the user know something went wrong
                 self.status.set('Recording unsuccessful!')
                 self.label_record.configure(foreground='red')
@@ -117,22 +122,30 @@ class DataCollectionGUI:
             self.dc.transfer_video(self.meta_data)
             # change button to save
             self.button_record_save.configure(text='Record', command=self.record)
+            self.button_show.grid_forget()
             self.button_clear.grid_forget()
             # let the user know it was successful
             self.status.set('Saving successful!')
             self.label_record.configure(foreground='green')
-        except:
+        except Exception as e:
+            print(e)
             # let the user know something went wrong
             self.status.set('Saving unsuccessful!')
             self.label_record.configure(foreground='red')
         self.button_record_save.state(['!disabled'])
     
+    def show(self):
+        """Show latest recording
+        """
+        startfile(self.meta_data['movie_file_path'])
+
     def clear(self):
         """Clear recording
         """
         self.dc.remove_video(self.meta_data)
         self.reset_meta_data()
         self.button_record_save.configure(text='Record', command=self.record)
+        self.button_show.grid_forget()
         self.button_clear.grid_forget()
         self.status.set('Removed recording')
         self.label_record.configure(foreground='green')
